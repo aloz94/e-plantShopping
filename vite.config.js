@@ -1,9 +1,9 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  base: '/e-plantShopping/',
-  build: { outDir: 'docs' },
+  base: '/e-plantShopping/',     // שם הריפו שלך בדיוק!
+  build: { outDir: 'docs' },     // נבנה לתיקיית docs
   plugins: [react()],
 })
