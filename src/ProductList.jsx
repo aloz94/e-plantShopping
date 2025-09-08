@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import  addItem  from './CartSlice';
+
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
 
     const plantsArray = [
         {
@@ -252,6 +255,15 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
+
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product)); 
+      
+        setAddedToCart((prevState) => ({ 
+          ...prevState, 
+          [product.name]: true, 
+        }));
+      };
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -273,13 +285,46 @@ function ProductList({ onHomeClick }) {
                 </div>
             </div>
             {!showCart ? (
-                <div className="product-grid">
+  <div className="product-grid">
+    {plantsArray.map((section) => (
+      <div key={section.category}>
+        {/* כותרת הקטגוריה */}
+        <div className="plantname_heading">
+          <h2 className="plant_heading">{section.category}</h2>
+        </div>
 
+        {/* גריד הקלפים לפי ה-CSS שלך */}
+        <div className="product-list">
+          {section.plants.map((plant) => (
+            <div className="product-card" key={plant.name}>
+              <img
+                className="product-image"
+                src={plant.image}
+                alt={plant.name}
+              />
 
-                </div>
-            ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
-            )}
+              <div className="product-title">{plant.name}</div>
+
+              <p>{plant.description}</p>
+
+              <div className="product-price">{plant.cost}</div>
+
+              {/* כפתור לדוגמה – אפשר לשנות לפונקציונליות העגלה שלך */}
+              <button
+                className="product-button"
+                onClick={() => setShowCart(true)}
+              >
+                Add to cart
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <CartItem onContinueShopping={handleContinueShopping} />
+)}
         </div>
     );
 }
